@@ -9,8 +9,7 @@
 </head>
 <body>
   <div class="container py-5">
-    <button id="start">start</button>
-    <button id="stop">stop</button>
+    <div id="timer-text"></div>
  </div>
 </body>
 <!-- JavaScript Bundle with Popper -->
@@ -50,9 +49,7 @@
 </div>
 <script>
   const timerEl = document.getElementById("timer-text")
-  const startBtn = document.getElementById("start")
   const restartBtn = document.getElementById("restart");
-  const stopBtn = document.getElementById('stop');
 
   let runTheClock;
   let seconds = 30;
@@ -113,9 +110,6 @@
     location.href = "timeout.html";
   }
   restartBtn.addEventListener("click", resetTimer);
-  stopBtn.addEventListener("click", stopTimer);
-  startBtn.addEventListener("click", runTimer);
-
   window.addEventListener("load", function () {
     runTimer();
   });
