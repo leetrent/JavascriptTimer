@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" 
+      rel="stylesheet" i
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" 
+      crossorigin="anonymous">
+</head>
+<body>
+  <div class="container py-5">
+    <button id="start">start</button>
+    <button id="stop">stop</button>
+ </div>
+</body>
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+<script
+  src="https://code.jquery.com/jquery-3.6.1.min.js"
+  integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+  crossorigin="anonymous"></script>
+
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Your session is about to end. Would like to continue working?
+            <div id="timer-text"></div>
+            <div id="modal-text"></div>
+        <script>
+          const timerTextObj = document.getElementById("timer-text");
+          console.log("timerTextObj", timerTextObj);  
+          modalTextObj = document.getElementById("modal-text");   
+          console.log("timerTextObj", timerTextObj);  
+          let msg = `You have <span style="color:red">${timerTextObj.textContent}</span> seconds until your session expires. Would you like to continue working?`;
+        </script>
+      </div>
+      <div class="modal-footer">
+        <button id="restart" type="button" class="btn btn-primary" data-bs-dismiss="modal">Yes</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  const timerEl = document.getElementById("timer-text")
+  const startBtn = document.getElementById("start")
+  const restartBtn = document.getElementById("restart");
+  const stopBtn = document.getElementById('stop');
+
+  let runTheClock;
+  let seconds = 30;
+  render(seconds);
+
+  function makeTwoNumbers(num) {
+    //console.log("[makeTwoNumbers] => (num):", num)
+    return ((num < 10) ? "0" : "") + num;
+  }
+
+  function tick() {
+    seconds--;
+    //console.log("[tick] => (seconds):", seconds);
+    render(seconds);
+  }
+
+  function render(secs) {
+    //console.log("[render] => (secs):", secs);
+
+    const hours = Math.floor(secs / 3600);
+    const minutes = Math.floor(secs / 60) - (hours * 60);
+    const seconds = secs % 60;
+
+    //console.log("[render] => (hours):", hours);
+    //console.log("[render] => (minutes):", minutes);
+   // console.log("[render] => (seconds):", seconds);
+
+    const val = [hours, minutes, seconds].map(makeTwoNumbers).join(":");
+    console.log("[render] => (val):", val);
+    timerEl.textContent = val;
+
+    if (secs == 15) {
+      $('#staticBackdrop').modal('show');
+    }
+
+    if (secs == 0) {
+      //location.href = "timeout.html";
+      endSession();
+    }
+  }
+
+  function runTimer() {
+    console.log("[runTimer] =>");
+    runTheClock = setInterval(tick, 1000);
+  }
+
+  function stopTimer() {
+    clearInterval(runTheClock)
+  }
+
+  function resetTimer() {
+  console.log("[resetTimer] =>");
+    seconds = 30;
+    render(seconds);
+  }
+
+  function endSession() {
+    location.href = "timeout.html";
+  }
+  restartBtn.addEventListener("click", resetTimer);
+  stopBtn.addEventListener("click", stopTimer);
+  startBtn.addEventListener("click", runTimer);
+
+  window.addEventListener("load", function () {
+    runTimer();
+  });
+
+</script>
+</html>
